@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* reverted to original dark navy background */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 42 87% 55%;
+    --primary-foreground: 222 47% 6%;
+
+    --secondary: 215 70% 45%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 30% 14%;
+    --muted-foreground: 215 20% 60%;
+
+    --accent: 215 90% 55%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 42 87% 55%;
+
+    --radius: 0.75rem;
+
+    --gold: 42 87% 55%;
+    --gold-light: 42 90% 70%;
+    --gold-dark: 42 80% 40%;
+    --navy: 222 47% 6%;
+    --navy-light: 222 40% 12%;
+    --navy-mid: 222 35% 18%;
+    --blue-glow: 215 90% 55%;
+    --blue-light: 215 85% 65%;
+
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 42 87% 55%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 222 30% 14%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 42 87% 55%;
+
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%);
+  }
+
+  .text-gradient-blue {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--blue-glow)) 0%, hsl(var(--blue-light)) 100%);
+  }
+
+  .bg-navy-gradient {
+    background: linear-gradient(180deg, hsl(var(--navy)) 0%, hsl(var(--navy-light)) 100%);
+  }
+
+  .bg-card-glass {
+    background: hsl(var(--navy-light) / 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border));
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 30px hsl(var(--gold) / 0.3), 0 0 60px hsl(var(--gold) / 0.1);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 30px hsl(var(--blue-glow) / 0.3), 0 0 60px hsl(var(--blue-glow) / 0.1);
+  }
+
+  .section-padding {
+    @apply px-6 py-16 md:px-12 lg:px-20 lg:py-20;
+  }
+}

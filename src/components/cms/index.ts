@@ -1,0 +1,14 @@
+export { default as CMSTable } from './CMSTable';
+export { default as CMSFormDialog } from './CMSFormDialog';
+export { default as NewsManagement } from './NewsManagement';
+export { default as ProjectsManagement } from './ProjectsManagement';
+export { default as ServicesManagement } from './ServicesManagement';
+export { default as CSRManagement } from './CSRManagement';
+export { default as EventsManagement } from './EventsManagement';
+export { default as CareersManagement } from './CareersManagement';
+export { default as TestimonialsManagement } from './TestimonialsManagement';
+export { default as SpecialOffersManagement } from './SpecialOffersManagement';
+export { default as FooterManagement } from './FooterManagement';
+export { default as LeadershipManagement } from './LeadershipManagement';
+export { default as WhyChooseManagement } from './WhyChooseManagement';
+export { default as LocationCardsManagement } from './LocationCardsManagement';
