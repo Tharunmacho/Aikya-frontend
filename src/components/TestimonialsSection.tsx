@@ -1,28 +1,33 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { cmsAPI } from "@/services/api";
+import { cmsItemsAPI } from "@/services/api";
 import { Quote } from "lucide-react";
 
 const TestimonialsSection = () => {
-  const [testimonialsData, setTestimonialsData] = useState<any>(null);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTestimonialsData = async () => {
+    const fetchTestimonials = async () => {
       try {
-        const response = await cmsAPI.getTestimonials();
-        setTestimonialsData(response.data);
+        const response = await cmsItemsAPI.getTestimonials();
+        setTestimonials(response.data || []);
       } catch (error) {
         console.error("Error fetching testimonials:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchTestimonialsData();
+    fetchTestimonials();
   }, []);
 
-  if (loading || !testimonialsData) {
+  if (loading) {
     return <div className="section-padding text-center">Loading...</div>;
+  }
+
+  // Don't render if no testimonials
+  if (!testimonials || testimonials.length === 0) {
+    return null;
   }
 
   return (
@@ -35,10 +40,10 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-            {testimonialsData.heading || 'Inspired by our clients\' dreams'}
+            What Our Clients Say
           </h2>
           <h3 className="font-heading text-4xl md:text-5xl font-bold text-gray-900 mt-4 leading-tight">
-            {testimonialsData.subheading || 'we create spaces that transform lives and possibilities'}
+            we create spaces that transform lives and possibilities
           </h3>
         </motion.div>
 
@@ -50,12 +55,12 @@ const TestimonialsSection = () => {
           className="mt-16"
         >
           <p className="max-w-3xl mx-auto font-body text-gray-600 text-sm md:text-base leading-relaxed mb-12">
-            {testimonialsData.description || 'Our clients are at the heart of everything we do.'}
+            Our clients are at the heart of everything we do.
           </p>
 
           {/* Testimonials Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            {(testimonialsData.testimonials || []).map((testimonial: any, index: number) => (
+            {testimonials.map((testimonial: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

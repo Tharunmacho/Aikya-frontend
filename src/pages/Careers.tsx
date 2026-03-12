@@ -167,12 +167,25 @@ const Careers = () => {
               className="text-center mb-12"
             >
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                {careersData.benefitsTitle || 'Why Work'} <span className="text-gray-500">{careersData.benefitsSubtitle || 'With Us?'}</span>
+                Why Work <span className="text-gray-500">With Us?</span>
               </h2>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {(careersData.benefits || []).map((benefit: any, index: number) => (
+              {[
+                {
+                  title: "Career Growth",
+                  description: "We invest in your professional development with training programs, mentorship, and clear career progression paths."
+                },
+                {
+                  title: "Work-Life Balance",
+                  description: "Enjoy flexible work arrangements, comprehensive benefits, and a supportive environment that values your well-being."
+                },
+                {
+                  title: "Innovation Culture",
+                  description: "Be part of cutting-edge projects where your ideas matter and innovation is encouraged at every level."
+                }
+              ].map((benefit: any, index: number) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}

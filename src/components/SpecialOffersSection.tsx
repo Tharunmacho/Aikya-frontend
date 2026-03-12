@@ -42,6 +42,16 @@ const SpecialOffersSection = () => {
     return <div className="section-padding text-center">Loading...</div>;
   }
 
+  // Get only the first active offer
+  const offer = specialOffersData.offers && specialOffersData.offers.length > 0 
+    ? specialOffersData.offers[0] 
+    : null;
+
+  // If no offers available, don't render the section
+  if (!offer) {
+    return null;
+  }
+
   return (
     <section id="offers" className="section-padding bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
       <div className="mx-auto max-w-7xl">
@@ -60,10 +70,8 @@ const SpecialOffersSection = () => {
           </p>
         </motion.div>
 
-        {(specialOffersData.offers || []).map((offer: any, index: number) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 40 }}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
@@ -237,7 +245,6 @@ const SpecialOffersSection = () => {
               </a>
             </div>
           </motion.div>
-        ))}
       </div>
     </section>
   );

@@ -203,10 +203,10 @@ const CSR = () => {
               transition={{ duration: 0.6 }}
             >
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
-                {csrData.impactTitle || 'Why We Care'}
+                Why We Care
               </h2>
               <p className="font-body text-gray-300 text-lg leading-relaxed">
-                {csrData.impactDescription || 'At Aikya, our commitment extends beyond infrastructure development to creating a meaningful and lasting impact on society.'}
+                At Aikya, our commitment extends beyond infrastructure development to creating a meaningful and lasting impact on society. We believe in giving back to communities and building a sustainable future for generations to come.
               </p>
             </motion.div>
           </div>

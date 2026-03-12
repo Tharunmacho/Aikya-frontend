@@ -1,15 +1,57 @@
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { cmsAPI } from "@/services/api";
+
+interface ContactData {
+  heading: string;
+  headingHighlight: string;
+  description: string;
+  companyName: string;
+  address: string;
+  contactPersons: string;
+  phone: string;
+  email: string;
+  mapCoordinates: string;
+}
 
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [contactData, setContactData] = useState<ContactData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        const response = await cmsAPI.getContact();
+        if (response.success && response.data) {
+          setContactData(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching contact data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContactData();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   };
+
+  if (loading) {
+    return (
+      <section id="contact" className="section-padding bg-gradient-to-br from-gray-50 to-white">
+        <div className="mx-auto max-w-7xl text-center">
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="contact" className="section-padding bg-gradient-to-br from-gray-50 to-white">
@@ -22,10 +64,10 @@ const ContactSection = () => {
           className="text-center mb-16"
         >
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Let's Build <span className="text-gray-500 italic">Together</span>
+            {contactData?.heading} <span className="text-gray-500 italic">{contactData?.headingHighlight}</span>
           </h2>
           <p className="mx-auto max-w-xl font-body text-gray-600 text-sm md:text-base">
-            Ready to transform your dreams into reality? Partner with India's leading real estate developer.
+            {contactData?.description}
           </p>
         </motion.div>
 
@@ -86,9 +128,9 @@ const ContactSection = () => {
               <div>
                 <h4 className="font-heading font-semibold text-gray-900">Office Address</h4>
                 <div className="mt-1 font-body text-sm text-gray-600 space-y-1">
-                  <p>AIKYA BUILDERS PVT LTD</p>
-                  <p>NO 2, EDEN PARK STREET, KRUNJI NAGAR, WEST TAMBARAM, CHENNAI - 600045</p>
-                  <p>B. GOPALAKRISHNAN / M B FURHAN SIDDIQ</p>
+                  <p>{contactData?.companyName}</p>
+                  <p>{contactData?.address}</p>
+                  <p>{contactData?.contactPersons}</p>
                 </div>
               </div>
             </div>
@@ -100,7 +142,7 @@ const ContactSection = () => {
               <div>
                 <h4 className="font-heading font-semibold text-gray-900">Phone</h4>
                 <div className="mt-1 font-body text-sm text-gray-600 space-y-1">
-                  <p>+91 98765 43210</p>
+                  <p>{contactData?.phone}</p>
                 </div>
               </div>
             </div>
@@ -111,7 +153,7 @@ const ContactSection = () => {
               </div>
               <div>
                 <h4 className="font-heading font-semibold text-gray-900">Email</h4>
-                <p className="mt-1 font-body text-sm text-gray-600">info@aikyabuildsfuture.com</p>
+                <p className="mt-1 font-body text-sm text-gray-600">{contactData?.email}</p>
               </div>
             </div>
           </motion.div>
@@ -126,7 +168,7 @@ const ContactSection = () => {
           className="mt-16"
         >
           <iframe
-            src="https://maps.google.com/maps?q=12.92,80.12&z=15&output=embed"
+            src={`https://maps.google.com/maps?q=${contactData?.mapCoordinates}&z=15&output=embed`}
             width="100%"
             height="400"
             className="rounded-2xl shadow-xl"

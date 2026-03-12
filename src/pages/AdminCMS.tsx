@@ -28,7 +28,8 @@ import {
   UserPlus,
   Globe,
   LayoutDashboard,
-  Settings
+  Settings,
+  Mail
 } from "lucide-react";
 import { cmsAPI } from "@/services/api";
 import { NewsManagement, ProjectsManagement, ServicesManagement, CSRManagement, EventsManagement, CareersManagement, TestimonialsManagement, SpecialOffersManagement, FooterManagement, LeadershipManagement, WhyChooseManagement, LocationCardsManagement } from "@/components/cms";
@@ -97,6 +98,18 @@ const AdminCMS = () => {
     email: '',
   });
 
+  const [contactData, setContactData] = useState({
+    heading: '',
+    headingHighlight: '',
+    description: '',
+    companyName: '',
+    address: '',
+    contactPersons: '',
+    phone: '',
+    email: '',
+    mapCoordinates: '',
+  });
+
   const [newsData, setNewsData] = useState({
     heading: '',
     description: '',
@@ -155,6 +168,7 @@ const AdminCMS = () => {
         specialOffersRes,
         servicesRes,
         footerRes,
+        contactRes,
         newsRes,
         csrRes,
         eventsRes,
@@ -167,6 +181,7 @@ const AdminCMS = () => {
         cmsAPI.getSpecialOffers(),
         cmsAPI.getServices(),
         cmsAPI.getFooter(),
+        cmsAPI.getContact(),
         cmsAPI.getNews(),
         cmsAPI.getCSR(),
         cmsAPI.getEvents(),
@@ -180,6 +195,7 @@ const AdminCMS = () => {
       setSpecialOffersData(specialOffersRes.data);
       setServicesData(servicesRes.data);
       setFooterData(footerRes.data);
+      setContactData(contactRes.data);
       setNewsData(newsRes.data);
       setCSRData(csrRes.data);
       setEventsData(eventsRes.data);
@@ -315,6 +331,25 @@ const AdminCMS = () => {
       toast({
         title: "Success!",
         description: "Footer section updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || "Failed to update",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateContact = async () => {
+    setLoading(true);
+    try {
+      await cmsAPI.updateContact(contactData);
+      toast({
+        title: "Success!",
+        description: "Contact section updated successfully",
       });
     } catch (error) {
       toast({
@@ -542,6 +577,108 @@ const AdminCMS = () => {
 
       case 'locations':
         return <LocationCardsManagement />;
+
+      case 'contact':
+        return (
+          <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <CardTitle className="text-slate-900 dark:text-white">Edit Contact Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Heading</label>
+                <Input
+                  value={contactData.heading}
+                  onChange={(e) => setContactData({ ...contactData, heading: e.target.value })}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="Let's Build"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Heading Highlight (italic text)</label>
+                <Input
+                  value={contactData.headingHighlight}
+                  onChange={(e) => setContactData({ ...contactData, headingHighlight: e.target.value })}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="Together"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Description</label>
+                <Textarea
+                  value={contactData.description}
+                  onChange={(e) => setContactData({ ...contactData, description: e.target.value })}
+                  rows={3}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="Ready to transform your dreams into reality?"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Company Name</label>
+                <Input
+                  value={contactData.companyName}
+                  onChange={(e) => setContactData({ ...contactData, companyName: e.target.value })}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="AIKYA BUILDERS PVT LTD"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Address</label>
+                <Textarea
+                  value={contactData.address}
+                  onChange={(e) => setContactData({ ...contactData, address: e.target.value })}
+                  rows={2}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="No 251, TNHB Colony, Tambaram Sanatorium, Chennai - 600 047"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Contact Persons</label>
+                <Input
+                  value={contactData.contactPersons}
+                  onChange={(e) => setContactData({ ...contactData, contactPersons: e.target.value })}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="B. GOPALAKRISHNAN / M B FURHAN SIDDIQ"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Phone</label>
+                <Input
+                  value={contactData.phone}
+                  onChange={(e) => setContactData({ ...contactData, phone: e.target.value })}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="+91 98765 43210"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
+                <Input
+                  type="email"
+                  value={contactData.email}
+                  onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="aikyabuilders@gmail.com"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Map Coordinates (latitude,longitude)</label>
+                <Input
+                  value={contactData.mapCoordinates}
+                  onChange={(e) => setContactData({ ...contactData, mapCoordinates: e.target.value })}
+                  className="mt-1 bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  placeholder="12.9968,80.1263"
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Get coordinates from Google Maps by right-clicking on a location
+                </p>
+              </div>
+              <Button onClick={updateContact} disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700">
+                <Save className="mr-2" size={18} />
+                Save Contact Information
+              </Button>
+            </CardContent>
+          </Card>
+        );
 
       case 'footer':
         return <FooterManagement />;
@@ -792,6 +929,17 @@ const AdminCMS = () => {
                       <span>Location Cards</span>
                     </button>
                     <button
+                      onClick={() => setActiveSection('contact')}
+                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
+                        activeSection === 'contact'
+                          ? 'bg-blue-600 text-white'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <Mail size={18} />
+                      <span>Contact Info</span>
+                    </button>
+                    <button
                       onClick={() => setActiveSection('footer')}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'footer'
@@ -840,6 +988,7 @@ const AdminCMS = () => {
                  activeSection === 'leadership' ? 'Leadership Team' :
                  activeSection === 'whychoose' ? 'Why Choose Us' :
                  activeSection === 'locations' ? 'Location Cards' :
+                 activeSection === 'contact' ? 'Contact Information' :
                  activeSection === 'footer' ? 'Footer' :
                  activeSection}
               </h2>
