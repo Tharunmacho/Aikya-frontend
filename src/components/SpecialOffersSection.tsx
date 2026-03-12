@@ -4,6 +4,22 @@ import specialOfferImage from "@/assets/hero-bg.jpg";
 import { useState, useEffect } from "react";
 import { cmsAPI } from "@/services/api";
 
+// Helper to get the full image URL
+const getImageUrl = (imagePath: string) => {
+  if (!imagePath) return '';
+  // If it's already a full URL, return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  // If it's a relative API path, prepend the backend API URL
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  if (imagePath.startsWith('/api/')) {
+    // Remove /api prefix since API_BASE already includes it
+    return API_BASE.replace('/api', '') + imagePath;
+  }
+  return imagePath;
+};
+
 const SpecialOffersSection = () => {
   const [specialOffersData, setSpecialOffersData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +73,7 @@ const SpecialOffersSection = () => {
               {/* Left Side - Image */}
               <div className="relative h-[400px] md:h-auto">
                 <img
-                  src={offer.image || specialOfferImage}
+                  src={getImageUrl(offer.image) || specialOfferImage}
                   alt={offer.title}
                   className="w-full h-full object-cover"
                 />

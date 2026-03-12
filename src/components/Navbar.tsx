@@ -12,7 +12,6 @@ const navLinks = [
   ]},
   { label: "Services", href: "/services" },
   { label: "About Us", href: "#about" },
-  { label: "Special Offers", href: "#offers" },
   { label: "Our Stories", href: "#", dropdown: [
     { label: "Group of Company", href: "/group-of-company" },
     { label: "Partner with Us", href: "/partner-with-us" },
@@ -251,15 +250,15 @@ const Navbar = () => {
                   Login
                 </button>
                 <button
+                  onClick={() => handleNavClick("/contact-us")}
+                  className="rounded-full bg-gray-900 px-6 py-2.5 font-body text-sm font-semibold text-white transition-all hover:bg-gray-800 cursor-pointer"
+                >
+                  Contact Us
+                </button>
               </>
             )}
           </div>
         </div>
-
-        {/* Mobile toggle */}
-        <button onClick={() => setIsOpen(!isOpen)} className="text-foreground md:hidden">
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
       </div>
 
       <AnimatePresence>
