@@ -65,6 +65,12 @@ const CSRManagement = () => {
       placeholder: 'e.g., Education, Healthcare, Environment',
     },
     {
+      name: 'location',
+      label: 'Location',
+      type: 'text' as const,
+      placeholder: 'e.g., Chennai, Tirunelveli',
+    },
+    {
       name: 'date',
       label: 'Date',
       type: 'date' as const,
@@ -81,6 +87,13 @@ const CSRManagement = () => {
       type: 'textarea' as const,
       placeholder: 'e.g., 500+ families helped, 1000+ trees planted',
       rows: 3,
+    },
+    {
+      name: 'order',
+      label: 'Display Order',
+      type: 'number' as const,
+      required: false,
+      placeholder: '1',
     },
   ];
 

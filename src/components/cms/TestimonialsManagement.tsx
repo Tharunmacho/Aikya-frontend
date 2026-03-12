@@ -99,6 +99,20 @@ const TestimonialsManagement = () => {
       required: true,
       placeholder: '5',
     },
+    {
+      name: 'location',
+      label: 'Location (Optional)',
+      type: 'text' as const,
+      required: false,
+      placeholder: 'e.g., Chennai, Bangalore',
+    },
+    {
+      name: 'order',
+      label: 'Display Order',
+      type: 'number' as const,
+      required: false,
+      placeholder: '0',
+    },
   ];
 
   useEffect(() => {

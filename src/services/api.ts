@@ -288,10 +288,12 @@ export const cmsItemsAPI = {
   },
 
   // ===== PROJECTS =====
-  getProjects: async (filters?: { category?: string; status?: string; search?: string }) => {
+  getProjects: async (filters?: { category?: string; status?: string; location?: string; area?: string; search?: string }) => {
     const params = new URLSearchParams();
-    if (filters?.category) params.append('category', filters.category);
-    if (filters?.status) params.append('status', filters.status);
+    if (filters?.category && filters.category !== 'all') params.append('category', filters.category);
+    if (filters?.status && filters.status !== 'all') params.append('status', filters.status);
+    if (filters?.location && filters.location !== 'all') params.append('location', filters.location);
+    if (filters?.area && filters.area !== 'all') params.append('area', filters.area);
     if (filters?.search) params.append('search', filters.search);
     const response = await api.get(`/cms-items/projects/items?${params}`);
     return response.data;

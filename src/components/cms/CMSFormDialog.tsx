@@ -62,10 +62,26 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    // Only initialize form data once when dialog opens
-    if (open && !initializedRef.current) {
+    // Initialize form data when dialog opens or initialData changes
+    if (open) {
       if (initialData) {
-        setFormData(initialData);
+        // Process initialData to ensure proper format
+        const processedData: Record<string, any> = {};
+        fields.forEach(field => {
+          const value = initialData[field.name];
+          
+          // Handle different field types
+          if (field.type === 'array') {
+            processedData[field.name] = Array.isArray(value) ? value : (value ? [value] : []);
+          } else if (field.type === 'select') {
+            // Ensure select fields have valid values (handle undefined/null)
+            processedData[field.name] = value !== undefined && value !== null ? String(value) : '';
+          } else {
+            processedData[field.name] = value !== undefined && value !== null ? value : '';
+          }
+        });
+        setFormData(processedData);
+        console.log('📝 Form initialized with data:', processedData);
       } else {
         // Initialize empty form
         const emptyForm: Record<string, any> = {};
@@ -73,6 +89,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
           emptyForm[field.name] = field.type === 'array' ? [] : '';
         });
         setFormData(emptyForm);
+        console.log('📝 Form initialized empty');
       }
       initializedRef.current = true;
     }
@@ -80,6 +97,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
     // Reset when dialog closes
     if (!open) {
       initializedRef.current = false;
+      setFormData({});
     }
   }, [open, initialData, fields]);
 

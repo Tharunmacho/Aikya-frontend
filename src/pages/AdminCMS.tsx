@@ -629,12 +629,8 @@ const AdminCMS = () => {
                   <span>Home</span>
                 </button>
                 <button
-                  onClick={() => setActiveSection('dashboard')}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
-                    activeSection === 'dashboard'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-                  }`}
+                  onClick={() => navigate('/dashboard')}
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <LayoutDashboard size={18} />
                   <span>Dashboard</span>

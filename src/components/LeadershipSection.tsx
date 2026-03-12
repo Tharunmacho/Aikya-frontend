@@ -61,9 +61,21 @@ const LeadershipSection = () => {
               transition={{ duration: 0.6, delay: i * 0.15 }}
               className="rounded-2xl bg-gray-50 p-8 text-center transition-all hover:shadow-xl border border-gray-100"
             >
-              <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-gray-900 text-white">
-                <Users className="h-10 w-10" />
-              </div>
+              {leader.image ? (
+                <div className="mx-auto mb-5 h-24 w-24 rounded-full overflow-hidden border-4 border-gray-900 shadow-lg">
+                  <img 
+                    src={leader.image} 
+                    alt={leader.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-gray-900 text-white border-4 border-gray-700">
+                  <span className="text-3xl font-bold font-heading">
+                    {leader.initial || leader.name.charAt(0)}
+                  </span>
+                </div>
+              )}
               <h3 className="font-heading text-xl font-bold text-gray-900">{leader.name}</h3>
               <p className="mt-1 font-body text-sm font-semibold text-gray-600">{leader.title}</p>
               <p className="mt-4 font-body text-sm leading-relaxed text-gray-600">{leader.bio}</p>

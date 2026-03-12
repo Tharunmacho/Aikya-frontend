@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Projects from "./pages/Projects";
+import ChennaiProjects from "./pages/ChennaiProjects";
 import Services from "./pages/Services";
 import News from "./pages/News";
 import CSR from "./pages/CSR";
@@ -35,6 +36,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/projects" element={<Projects />} />
+              <Route path="/projects/chennai" element={<ChennaiProjects />} />
               <Route path="/services" element={<Services />} />
               <Route path="/news" element={<News />} />
               <Route path="/csr" element={<CSR />} />

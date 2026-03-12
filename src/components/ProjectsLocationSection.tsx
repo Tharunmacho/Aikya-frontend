@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { cmsItemsAPI } from "@/services/api";
 
 const ProjectsLocationSection = () => {
   const [locations, setLocations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -21,6 +23,16 @@ const ProjectsLocationSection = () => {
     };
     fetchLocations();
   }, []);
+
+  const handleViewProject = (locationName: string) => {
+    // Check if location is Chennai (case-insensitive)
+    if (locationName.toLowerCase().includes('chennai')) {
+      navigate('/projects/chennai');
+    } else {
+      // For other locations, navigate to general projects page
+      navigate('/projects');
+    }
+  };
 
   if (loading || locations.length === 0) {
     return null;
@@ -81,7 +93,10 @@ const ProjectsLocationSection = () => {
 
                 {/* View Project button */}
                 <div className="absolute bottom-8 left-0 right-0 flex justify-center">
-                  <button className="bg-white/95 backdrop-blur-sm px-10 py-4 rounded-full font-body font-semibold text-gray-900 hover:bg-white transition-all flex items-center gap-2 shadow-lg group-hover:shadow-xl">
+                  <button 
+                    onClick={() => handleViewProject(location.name)}
+                    className="bg-white/95 backdrop-blur-sm px-10 py-4 rounded-full font-body font-semibold text-gray-900 hover:bg-white transition-all flex items-center gap-2 shadow-lg group-hover:shadow-xl"
+                  >
                     View Project
                     <ArrowRight className="h-4 w-4" />
                   </button>

@@ -199,7 +199,7 @@ const Navbar = () => {
                             className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-50 transition-colors cursor-pointer text-left"
                           >
                             <Settings size={18} className="text-gray-600" />
-                            <span className="font-body text-sm text-gray-900">Manage Content</span>
+                            <span className="font-body text-sm text-gray-900">Management Setting</span>
                           </button>
                         )}
                         <button
@@ -287,7 +287,7 @@ const Navbar = () => {
                       className="w-full rounded-lg border-2 border-gray-900 px-5 py-2.5 text-left font-body text-sm font-semibold text-gray-900 cursor-pointer flex items-center gap-2 hover:bg-gray-50"
                     >
                       <Settings size={18} />
-                      Manage Content
+                      Management Setting
                     </button>
                   )}
                   <button

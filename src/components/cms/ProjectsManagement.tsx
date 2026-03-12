@@ -24,6 +24,11 @@ const ProjectsManagement = () => {
           {item.location && (
             <p className="text-xs text-slate-500 mt-1">{item.location}</p>
           )}
+          {item.area && (
+            <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">
+              📍 {item.area}
+            </p>
+          )}
         </div>
       ),
     },
@@ -77,6 +82,28 @@ const ProjectsManagement = () => {
         { value: 'upcoming', label: 'Upcoming' },
       ],
     },
+    {
+      key: 'location',
+      label: 'All Locations',
+      options: [
+        { value: 'all', label: 'All Locations' },
+        { value: 'chennai', label: 'Chennai' },
+        { value: 'tirunelveli', label: 'Tirunelveli' },
+        { value: 'chengalpattu', label: 'Chengalpattu' },
+      ],
+    },
+    {
+      key: 'area',
+      label: 'Chennai Area',
+      options: [
+        { value: 'all', label: 'All Areas' },
+        { value: 'tambaram', label: 'Tambaram' },
+        { value: 'perugalathur', label: 'Perugalathur' },
+        { value: 'hastinapuram', label: 'Hastinapuram' },
+        { value: 'gudavancherry', label: 'Gudavancherry' },
+        { value: 'chithlapakam', label: 'Chithlapakam' },
+      ],
+    },
   ];
 
   const formFields = [
@@ -93,6 +120,20 @@ const ProjectsManagement = () => {
       type: 'text' as const,
       required: true,
       placeholder: 'e.g., Chennai, Tamil Nadu',
+    },
+    {
+      name: 'area',
+      label: 'Chennai Area',
+      type: 'select' as const,
+      required: false,
+      options: [
+        { value: '', label: 'No specific area' },
+        { value: 'tambaram', label: 'Tambaram' },
+        { value: 'perugalathur', label: 'Perugalathur' },
+        { value: 'hastinapuram', label: 'Hastinapuram' },
+        { value: 'gudavancherry', label: 'Gudavancherry' },
+        { value: 'chithlapakam', label: 'Chithlapakam' },
+      ],
     },
     {
       name: 'description',
@@ -198,6 +239,8 @@ const ProjectsManagement = () => {
     { label: 'Ongoing', value: stats.ongoing || 0, color: 'bg-blue-500/20' },
     { label: 'Completed', value: stats.completed || 0, color: 'bg-green-500/20' },
     { label: 'Upcoming', value: stats.upcoming || 0, color: 'bg-purple-500/20' },
+    { label: 'Chennai', value: stats.chennai || 0, color: 'bg-orange-500/20' },
+    { label: 'With Area', value: stats.withArea || 0, color: 'bg-teal-500/20' },
   ];
 
   return (

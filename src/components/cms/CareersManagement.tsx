@@ -120,6 +120,13 @@ const CareersManagement = () => {
       placeholder: 'e.g., 3-5 years',
     },
     {
+      name: 'salary',
+      label: 'Salary Range',
+      type: 'text' as const,
+      required: false,
+      placeholder: 'e.g., ₹5L - ₹8L per annum',
+    },
+    {
       name: 'requirements',
       label: 'Requirements',
       type: 'array' as const,
@@ -132,6 +139,13 @@ const CareersManagement = () => {
       type: 'array' as const,
       placeholder: 'Enter responsibilities (one per line)',
       rows: 5,
+    },
+    {
+      name: 'benefits',
+      label: 'Benefits',
+      type: 'array' as const,
+      placeholder: 'Enter benefits (one per line)',
+      rows: 3,
     },
     {
       name: 'applyLink',

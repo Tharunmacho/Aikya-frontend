@@ -121,6 +121,13 @@ const EventsManagement = () => {
       type: 'text' as const,
       placeholder: 'https://...',
     },
+    {
+      name: 'order',
+      label: 'Display Order',
+      type: 'number' as const,
+      required: false,
+      placeholder: '1',
+    },
   ];
 
   const fetchEvents = async (filters?: any) => {

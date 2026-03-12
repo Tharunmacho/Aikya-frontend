@@ -85,6 +85,13 @@ const ServicesManagement = () => {
       placeholder: 'Icon name (e.g., Home, Building, Wrench)',
     },
     {
+      name: 'order',
+      label: 'Display Order',
+      type: 'number' as const,
+      required: false,
+      placeholder: '1',
+    },
+    {
       name: 'image',
       label: 'Featured Image',
       type: 'image' as const,

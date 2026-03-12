@@ -118,6 +118,13 @@ const NewsManagement = () => {
       placeholder: 'Upload or enter image URL',
     },
     {
+      name: 'author',
+      label: 'Author',
+      type: 'text' as const,
+      required: false,
+      placeholder: 'e.g., John Doe',
+    },
+    {
       name: 'category',
       label: 'Category',
       type: 'text' as const,
@@ -140,6 +147,19 @@ const NewsManagement = () => {
       type: 'array' as const,
       placeholder: 'Enter tags (one per line or comma-separated)',
       rows: 2,
+    },
+    {
+      name: 'publishedDate',
+      label: 'Published Date',
+      type: 'date' as const,
+      required: false,
+    },
+    {
+      name: 'order',
+      label: 'Display Order',
+      type: 'number' as const,
+      required: false,
+      placeholder: '1',
     },
   ];
 

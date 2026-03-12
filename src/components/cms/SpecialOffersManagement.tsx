@@ -156,6 +156,20 @@ const SpecialOffersManagement = () => {
       required: false,
       placeholder: 'contact@example.com',
     },
+    {
+      name: 'validUntil',
+      label: 'Valid Until Date',
+      type: 'date' as const,
+      required: false,
+      placeholder: 'Select expiry date',
+    },
+    {
+      name: 'order',
+      label: 'Display Order',
+      type: 'number' as const,
+      required: false,
+      placeholder: '0',
+    },
   ];
 
   useEffect(() => {
