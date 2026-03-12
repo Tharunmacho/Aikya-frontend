@@ -12,6 +12,22 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
+// Helper to get the full image URL
+const getImageUrl = (imagePath: string) => {
+  if (!imagePath) return '';
+  // If it's already a full URL, return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  // If it's a relative API path, prepend the backend API URL
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  if (imagePath.startsWith('/api/')) {
+    // Remove /api prefix since API_BASE already includes it
+    return API_BASE.replace('/api', '') + imagePath;
+  }
+  return imagePath;
+};
+
 const Projects = () => {
   const [active, setActive] = useState("All");
   const [projects, setProjects] = useState<any[]>([]);
@@ -115,7 +131,7 @@ const Projects = () => {
                     >
                       <div className="relative h-52 overflow-hidden">
                         <img
-                          src={project.image || images.projects.flatsAndApartments[0]}
+                          src={getImageUrl(project.image) || images.projects.flatsAndApartments[0]}
                           alt={project.name}
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                           loading="lazy"

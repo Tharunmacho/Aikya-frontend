@@ -13,6 +13,22 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
+// Helper to get the full image URL
+const getImageUrl = (imagePath: string) => {
+  if (!imagePath) return '';
+  // If it's already a full URL, return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  // If it's a relative API path, prepend the backend API URL
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  if (imagePath.startsWith('/api/')) {
+    // Remove /api prefix since API_BASE already includes it
+    return API_BASE.replace('/api', '') + imagePath;
+  }
+  return imagePath;
+};
+
 const ChennaiProjects = () => {
   const navigate = useNavigate();
   const [activeArea, setActiveArea] = useState<string>("all");
@@ -201,7 +217,7 @@ const ChennaiProjects = () => {
                     >
                       <div className="relative h-56 overflow-hidden">
                         <img
-                          src={project.image}
+                          src={getImageUrl(project.image)}
                           alt={project.name}
                           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                           loading="lazy"
@@ -291,7 +307,7 @@ const ChennaiProjects = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={selectedImage}
+                src={getImageUrl(selectedImage)}
                 alt="Project detail"
                 className="w-full h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl"
               />
