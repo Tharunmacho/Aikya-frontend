@@ -17,7 +17,17 @@ interface ContactData {
 
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [contactData, setContactData] = useState<ContactData | null>(null);
+  const [contactData, setContactData] = useState<ContactData>({
+    heading: "Let's Build",
+    headingHighlight: "Together",
+    description: "Ready to transform your dreams into reality? Partner with India's leading real estate developer.",
+    companyName: "AIKYA BUILDERS PVT LTD",
+    address: "No 251, TNHB Colony, Tambaram Sanatorium, Chennai - 600 047",
+    contactPersons: "B. GOPALAKRISHNAN / M B FURHAN SIDDIQ",
+    phone: "+91 98765 43210",
+    email: "aikyabuilders@gmail.com",
+    mapCoordinates: "12.9968,80.1263"
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,6 +39,7 @@ const ContactSection = () => {
         }
       } catch (error) {
         console.error("Error fetching contact data:", error);
+        // Keep default data if fetch fails
       } finally {
         setLoading(false);
       }
@@ -45,7 +56,7 @@ const ContactSection = () => {
 
   if (loading) {
     return (
-      <section id="contact" className="section-padding bg-gradient-to-br from-gray-50 to-white">
+      <section id="contact" className="section-padding bg-gradient-to-br from-gray-50 to-white px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl text-center">
           <p className="text-gray-600">Loading...</p>
         </div>
@@ -64,10 +75,10 @@ const ContactSection = () => {
           className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-4">
-            {contactData?.heading} <span className="text-gray-500 italic">{contactData?.headingHighlight}</span>
+            {contactData.heading} <span className="text-gray-500 italic">{contactData.headingHighlight}</span>
           </h2>
           <p className="mx-auto max-w-xl font-body text-gray-600 text-sm sm:text-base px-4">
-            {contactData?.description}
+            {contactData.description}
           </p>
         </motion.div>
 
@@ -128,9 +139,9 @@ const ContactSection = () => {
               <div className="flex-1 min-w-0">
                 <h4 className="font-heading text-sm sm:text-base font-semibold text-gray-900">Office Address</h4>
                 <div className="mt-1 font-body text-xs sm:text-sm text-gray-600 space-y-1 break-words">
-                  <p className="font-medium">{contactData?.companyName}</p>
-                  <p className="leading-relaxed">{contactData?.address}</p>
-                  <p className="text-gray-700">{contactData?.contactPersons}</p>
+                  <p className="font-medium">{contactData.companyName}</p>
+                  <p className="leading-relaxed">{contactData.address}</p>
+                  <p className="text-gray-700">{contactData.contactPersons}</p>
                 </div>
               </div>
             </div>
@@ -142,8 +153,8 @@ const ContactSection = () => {
               <div className="flex-1 min-w-0">
                 <h4 className="font-heading text-sm sm:text-base font-semibold text-gray-900">Phone</h4>
                 <div className="mt-1 font-body text-xs sm:text-sm text-gray-600 space-y-1">
-                  <a href={`tel:${contactData?.phone}`} className="hover:text-gray-900 transition-colors">
-                    {contactData?.phone}
+                  <a href={`tel:${contactData.phone}`} className="hover:text-gray-900 transition-colors">
+                    {contactData.phone}
                   </a>
                 </div>
               </div>
@@ -156,10 +167,10 @@ const ContactSection = () => {
               <div className="flex-1 min-w-0">
                 <h4 className="font-heading text-sm sm:text-base font-semibold text-gray-900">Email</h4>
                 <a 
-                  href={`mailto:${contactData?.email}`} 
+                  href={`mailto:${contactData.email}`} 
                   className="mt-1 font-body text-xs sm:text-sm text-gray-600 hover:text-gray-900 transition-colors break-all block"
                 >
-                  {contactData?.email}
+                  {contactData.email}
                 </a>
               </div>
             </div>
@@ -175,7 +186,7 @@ const ContactSection = () => {
           className="mt-8 sm:mt-12 lg:mt-16"
         >
           <iframe
-            src={`https://maps.google.com/maps?q=${contactData?.mapCoordinates}&z=15&output=embed`}
+            src={`https://maps.google.com/maps?q=${contactData.mapCoordinates}&z=15&output=embed`}
             width="100%"
             height="300"
             className="rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl h-[300px] sm:h-[350px] md:h-[400px]"
