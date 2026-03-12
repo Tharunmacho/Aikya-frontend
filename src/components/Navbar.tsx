@@ -245,17 +245,42 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-gray-200 bg-white md:hidden shadow-lg"
+            className="border-t border-gray-200 bg-white md:hidden shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto"
           >
             <div className="flex flex-col gap-4 px-6 py-6">
               {navLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className="font-body text-gray-700 transition-colors hover:text-gray-900 text-left cursor-pointer"
-                >
-                  {link.label}
-                </button>
+                link.dropdown ? (
+                  <div key={link.href} className="flex flex-col gap-2">
+                    <button
+                      onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
+                      className="font-body text-gray-700 transition-colors hover:text-gray-900 text-left cursor-pointer font-semibold flex items-center justify-between"
+                    >
+                      {link.label}
+                      <ChevronDown className={`h-4 w-4 transition-transform ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
+                    </button>
+                    {activeDropdown === link.label && (
+                      <div className="pl-4 flex flex-col gap-2">
+                        {link.dropdown.map((item) => (
+                          <button
+                            key={item.href}
+                            onClick={() => handleNavClick(item.href)}
+                            className="font-body text-sm text-gray-600 transition-colors hover:text-gray-900 text-left cursor-pointer py-1"
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    key={link.href}
+                    onClick={() => handleNavClick(link.href)}
+                    className="font-body text-gray-700 transition-colors hover:text-gray-900 text-left cursor-pointer"
+                  >
+                    {link.label}
+                  </button>
+                )
               ))}
               {isAuthenticated && user ? (
                 <div className="space-y-3 mt-4 pt-4 border-t border-gray-200">
