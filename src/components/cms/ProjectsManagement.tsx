@@ -8,6 +8,7 @@ import { Badge } from '../ui/badge';
 const ProjectsManagement = () => {
   const [projects, setProjects] = useState<any[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [locations, setLocations] = useState<string[]>([]);
   const [stats, setStats] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
@@ -87,9 +88,7 @@ const ProjectsManagement = () => {
       label: 'All Locations',
       options: [
         { value: 'all', label: 'All Locations' },
-        { value: 'chennai', label: 'Chennai' },
-        { value: 'tirunelveli', label: 'Tirunelveli' },
-        { value: 'chengalpattu', label: 'Chengalpattu' },
+        ...locations.map(loc => ({ value: loc, label: loc })),
       ],
     },
     {
@@ -198,6 +197,7 @@ const ProjectsManagement = () => {
       const response = await cmsItemsAPI.getProjects(filters);
       setProjects(response.data);
       setCategories(response.categories || []);
+      setLocations(response.locations || []);
       setStats(response.stats || {});
     } catch (error: any) {
       toast({
