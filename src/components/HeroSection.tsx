@@ -43,13 +43,13 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Background - Right side building image */}
+      {/* Background - Right side building image - Hidden on mobile */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/5">
+        <div className="absolute right-0 top-0 bottom-0 w-full md:w-1/2 lg:w-2/5">
           <img 
             src={heroBg} 
             alt="Modern building" 
-            className="h-full w-full object-cover opacity-90" 
+            className="h-full w-full object-cover opacity-20 md:opacity-90" 
           />
           {/* Overlay with callouts */}
           <div className="absolute top-1/4 right-1/4 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg hidden lg:block">
@@ -78,13 +78,13 @@ const HeroSection = () => {
       </div>
 
       {/* Content - Left side */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-28 pb-20">
-        <div className="flex flex-col items-start max-w-2xl">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 pt-24 sm:pt-28 pb-16 sm:pb-20">
+        <div className="flex flex-col items-start w-full md:max-w-2xl">
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
-            className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-gray-900"
+            className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight text-gray-900"
           >
             {heroData.title}
             <br />
@@ -95,7 +95,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-6 max-w-xl font-body text-sm md:text-base text-gray-600 leading-relaxed"
+            className="mt-4 sm:mt-6 max-w-xl font-body text-sm sm:text-base text-gray-600 leading-relaxed"
           >
             {heroData.description}
           </motion.p>
@@ -104,11 +104,11 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.45 }}
-            className="mt-8"
+            className="mt-6 sm:mt-8"
           >
             <a
               href={heroData.buttonLink}
-              className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-8 py-3 font-body font-semibold text-white transition-all hover:bg-gray-800 shadow-xl text-sm md:text-base"
+              className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 sm:px-8 py-2.5 sm:py-3 font-body font-semibold text-white transition-all hover:bg-gray-800 shadow-xl text-sm md:text-base"
             >
               {heroData.buttonText}
             </a>
@@ -119,18 +119,18 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-8"
+            className="mt-6 sm:mt-8"
           >
             <p className="text-xs md:text-sm text-gray-600 mb-3">Join Our Community</p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white transition-all hover:bg-primary"
+                  className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-gray-900 text-white transition-all hover:bg-primary"
                 >
-                  <social.icon className="h-5 w-5" />
+                  <social.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
               ))}
             </div>
@@ -142,11 +142,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.75 }}
-          className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl"
+          className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl"
         >
           {stats.map((stat) => (
             <div key={stat.label} className="text-left">
-              <div className="font-heading text-4xl md:text-5xl font-bold text-gray-900 italic">
+              <div className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 italic">
                 {stat.value}
               </div>
               <div className="mt-1 font-body text-xs md:text-sm text-gray-600 leading-relaxed">{stat.label}</div>
