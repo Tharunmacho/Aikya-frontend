@@ -201,8 +201,3 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
-    </section>
-  );
-};
-
-export default ContactSection;
