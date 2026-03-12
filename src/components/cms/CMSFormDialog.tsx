@@ -62,8 +62,8 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    // Initialize form data when dialog opens or initialData changes
-    if (open) {
+    // Initialize form data only when dialog first opens, not on every re-render
+    if (open && !initializedRef.current) {
       if (initialData) {
         // Process initialData to ensure proper format
         const processedData: Record<string, any> = {};
