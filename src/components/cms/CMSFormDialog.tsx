@@ -295,13 +295,13 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
               {uploading && <Loader2 size={20} className="animate-spin" />}
             </div>
             <Input
-              type="url"
+              type="text"
               value={currentImageUrl}
               onChange={(e) => {
                 setFormData(prev => ({ ...prev, [field.name]: e.target.value }));
                 setImageKey(prev => prev + 1);
               }}
-              placeholder="Or enter image URL"
+              placeholder="Or enter image URL (https://... or /api/images/...)"
               className="w-full bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
