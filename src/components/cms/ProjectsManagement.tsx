@@ -24,7 +24,7 @@ const ProjectsManagement = () => {
           {item.location && (
             <p className="text-xs text-slate-500 mt-1">{item.location}</p>
           )}
-          {item.area && (
+          {item.area && item.area !== 'none' && (
             <p className="text-xs text-blue-500 dark:text-blue-400 mt-0.5">
               📍 {item.area}
             </p>
@@ -127,7 +127,7 @@ const ProjectsManagement = () => {
       type: 'select' as const,
       required: false,
       options: [
-        { value: '', label: 'No specific area' },
+        { value: 'none', label: 'No specific area' },
         { value: 'tambaram', label: 'Tambaram' },
         { value: 'perugalathur', label: 'Perugalathur' },
         { value: 'hastinapuram', label: 'Hastinapuram' },
