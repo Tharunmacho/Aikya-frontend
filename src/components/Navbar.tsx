@@ -89,8 +89,18 @@ const Navbar = () => {
       transition={{ duration: 0.6 }}
       className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm"
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <button onClick={() => handleNavClick("#home")} className="flex items-center gap-3 cursor-pointer">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-4">
+        {/* Mobile toggle - LEFT SIDE */}
+        <button 
+          onClick={() => setIsOpen(!isOpen)} 
+          className="md:hidden p-2 text-gray-900 hover:bg-gray-100 rounded-lg transition-colors z-50"
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Logo - CENTER on mobile, LEFT on desktop */}
+        <button onClick={() => handleNavClick("#home")} className="flex items-center gap-3 cursor-pointer md:mr-auto">
           {/* Logo */}
           <div className="bg-gray-900 text-white px-4 py-2 rounded">
             <span className="font-heading text-xl font-bold">aikya</span>
@@ -98,8 +108,26 @@ const Navbar = () => {
           <span className="font-body text-xs text-gray-600 hidden sm:block">Building Future</span>
         </button>
 
+        {/* Offers Button - Desktop and Mobile */}
+        <button
+          onClick={() => handleNavClick("#offers")}
+          className="md:hidden flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full font-body text-sm font-semibold transition-all shadow-md"
+        >
+          <span className="text-lg">🎁</span>
+          Offers
+        </button>
+
         {/* Desktop */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
+          {/* Special Offers Button - Desktop */}
+          <button
+            onClick={() => handleNavClick("#offers")}
+            className="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-full font-body text-sm font-semibold transition-all shadow-md"
+          >
+            <span className="text-lg">🎁</span>
+            Offers
+          </button>
+          
           {navLinks.map((link) => (
             link.dropdown ? (
               <div key={link.href} className="relative" ref={link.label === "Our Stories" ? storiesDropdownRef : undefined}>
@@ -223,11 +251,6 @@ const Navbar = () => {
                   Login
                 </button>
                 <button
-                  onClick={() => handleNavClick("/contact-us")}
-                  className="rounded-full bg-gray-900 px-6 py-2.5 font-body text-sm font-semibold text-white transition-all hover:bg-gray-800 cursor-pointer"
-                >
-                  Contact Us
-                </button>
               </>
             )}
           </div>
