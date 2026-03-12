@@ -146,15 +146,25 @@ const ProjectsManagement = () => {
     {
       name: 'category',
       label: 'Category',
-      type: 'text' as const,
+      type: 'select' as const,
       required: true,
-      placeholder: 'e.g., Residential, Commercial',
+      options: [
+        { value: 'residential', label: 'Residential' },
+        { value: 'commercial', label: 'Commercial' },
+        { value: 'plots', label: 'Plots' },
+      ],
     },
     {
       name: 'type',
       label: 'Type',
-      type: 'text' as const,
-      placeholder: 'e.g., Apartments, Villas',
+      type: 'select' as const,
+      options: [
+        { value: 'apartments', label: 'Apartments' },
+        { value: 'villas', label: 'Villas' },
+        { value: 'independent houses', label: 'Independent Houses' },
+        { value: 'commercial spaces', label: 'Commercial Spaces' },
+        { value: 'plots', label: 'Plots' },
+      ],
     },
     {
       name: 'status',

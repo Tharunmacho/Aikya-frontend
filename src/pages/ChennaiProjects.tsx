@@ -16,16 +16,10 @@ const fadeUp = {
 // Helper to get the full image URL
 const getImageUrl = (imagePath: string) => {
   if (!imagePath) return '';
-  // If it's already a full URL, return as is
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-    return imagePath;
-  }
-  // If it's a relative API path, prepend the backend API URL
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  if (imagePath.startsWith('/api/')) {
-    // Remove /api prefix since API_BASE already includes it
-    return API_BASE.replace('/api', '') + imagePath;
-  }
+  // Already a full URL
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
+  // Relative /api/ path — works via Vite proxy locally, and as relative URL in production
+  if (imagePath.startsWith('/api/')) return imagePath;
   return imagePath;
 };
 
