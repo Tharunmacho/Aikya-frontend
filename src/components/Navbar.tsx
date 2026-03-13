@@ -7,9 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const navLinks = [
   { label: "Home", href: "#home" },
-  { label: "Projects", href: "/projects", dropdown: [
-    { label: "Projects", href: "/projects" }
-  ]},
+  { label: "Projects", href: "/projects" },
   { label: "Services", href: "/services" },
   { label: "About Us", href: "#about" },
   { label: "Our Stories", href: "#", dropdown: [
@@ -25,9 +23,10 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null);
+  const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const activeDropdownRef = useRef<HTMLDivElement>(null);
+  const activeDesktopDropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user, isAdmin, logout } = useAuth();
@@ -45,8 +44,8 @@ const Navbar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsProfileDropdownOpen(false);
       }
-      if (activeDropdownRef.current && !activeDropdownRef.current.contains(event.target as Node)) {
-        setActiveDropdown(null);
+      if (activeDesktopDropdownRef.current && !activeDesktopDropdownRef.current.contains(event.target as Node)) {
+        setActiveDesktopDropdown(null);
       }
     };
 
@@ -65,8 +64,20 @@ const Navbar = () => {
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
-    setActiveDropdown(null);
+    setActiveDesktopDropdown(null);
+    setActiveMobileDropdown(null);
     if (href === "#") return; // Don't navigate for dropdown triggers
+    if (href.startsWith("#")) {
+      if (location.pathname !== "/") {
+        sessionStorage.setItem("pendingScrollTarget", href);
+        navigate("/");
+        return;
+      }
+
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
     if (href.startsWith("/")) {
       navigate(href);
     } else if (location.pathname !== "/") {
@@ -75,6 +86,24 @@ const Navbar = () => {
       document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    const pendingScrollTarget = sessionStorage.getItem("pendingScrollTarget");
+    if (!pendingScrollTarget) return;
+
+    const scrollToTarget = () => {
+      const targetElement = document.querySelector(pendingScrollTarget);
+      if (!targetElement) return;
+
+      targetElement.scrollIntoView({ behavior: "smooth" });
+      sessionStorage.removeItem("pendingScrollTarget");
+    };
+
+    const timeoutId = window.setTimeout(scrollToTarget, 100);
+    return () => window.clearTimeout(timeoutId);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logout();
@@ -128,17 +157,17 @@ const Navbar = () => {
           
           {desktopNavLinks.map((link) => (
             link.dropdown ? (
-              <div key={link.label} className="relative" ref={activeDropdown === link.label ? activeDropdownRef : undefined}>
+              <div key={link.label} className="relative" ref={activeDesktopDropdown === link.label ? activeDesktopDropdownRef : undefined}>
                 <button
-                  onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
+                  onClick={() => setActiveDesktopDropdown(activeDesktopDropdown === link.label ? null : link.label)}
                   className="font-body text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 cursor-pointer flex items-center gap-1"
                 >
                   {link.label}
-                  <ChevronDown className={`h-4 w-4 transition-transform ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`h-4 w-4 transition-transform ${activeDesktopDropdown === link.label ? 'rotate-180' : ''}`} />
                 </button>
                 
                 <AnimatePresence>
-                  {activeDropdown === link.label && (
+                  {activeDesktopDropdown === link.label && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -273,13 +302,13 @@ const Navbar = () => {
                 link.dropdown ? (
                   <div key={link.label} className="flex flex-col gap-2">
                     <button
-                      onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
+                      onClick={() => setActiveMobileDropdown(activeMobileDropdown === link.label ? null : link.label)}
                       className="font-body text-gray-700 transition-colors hover:text-gray-900 text-left cursor-pointer font-semibold flex items-center justify-between"
                     >
                       {link.label}
-                      <ChevronDown className={`h-4 w-4 transition-transform ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`h-4 w-4 transition-transform ${activeMobileDropdown === link.label ? 'rotate-180' : ''}`} />
                     </button>
-                    {activeDropdown === link.label && (
+                    {activeMobileDropdown === link.label && (
                       <div className="pl-4 flex flex-col gap-2">
                         {link.dropdown.map((item) => (
                           <button

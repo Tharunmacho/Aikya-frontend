@@ -21,6 +21,7 @@ import {
 import { uploadAPI } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 import { X, Loader2 } from 'lucide-react';
+import { getImageUrl } from '@/utils/getImageUrl';
 
 interface FormField {
   name: string;
@@ -256,7 +257,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
             {currentImageUrl && (
               <div className="relative inline-block">
                 <img
-                  src={currentImageUrl}
+                  src={getImageUrl(currentImageUrl)}
                   alt="Preview"
                   key={`${field.name}-${imageKey}-${currentImageUrl}`}
                   className="w-32 h-32 object-cover rounded-lg border"

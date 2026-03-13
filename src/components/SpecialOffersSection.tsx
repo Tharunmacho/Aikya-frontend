@@ -2,33 +2,47 @@ import { motion } from "framer-motion";
 import { BedDouble, Calendar, Maximize, Building2, ArrowRight, Phone, Instagram } from "lucide-react";
 import specialOfferImage from "@/assets/hero-bg.jpg";
 import { useState, useEffect } from "react";
-import { cmsAPI } from "@/services/api";
-
-// Helper to get the full image URL
-const getImageUrl = (imagePath: string) => {
-  if (!imagePath) return '';
-  // If it's already a full URL, return as is
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-    return imagePath;
-  }
-  // If it's a relative API path, prepend the backend API URL
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  if (imagePath.startsWith('/api/')) {
-    // Remove /api prefix since API_BASE already includes it
-    return API_BASE.replace('/api', '') + imagePath;
-  }
-  return imagePath;
-};
+import { cmsAPI, cmsItemsAPI } from "@/services/api";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 const SpecialOffersSection = () => {
   const [specialOffersData, setSpecialOffersData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  const normalizeOffers = (payload: any) => {
+    if (Array.isArray(payload?.data)) return payload.data;
+    if (Array.isArray(payload?.offers)) return payload.offers;
+    if (Array.isArray(payload?.data?.offers)) return payload.data.offers;
+    if (Array.isArray(payload)) return payload;
+    return [];
+  };
+
   useEffect(() => {
     const fetchSpecialOffersData = async () => {
       try {
-        const response = await cmsAPI.getSpecialOffers();
-        setSpecialOffersData(response.data);
+        const cmsResponse = await cmsAPI.getSpecialOffers();
+        const cmsData = cmsResponse?.data || cmsResponse || {};
+        const cmsOffers = normalizeOffers(cmsResponse);
+
+        if (cmsOffers.length > 0) {
+          setSpecialOffersData({
+            heading: cmsData.heading,
+            subheading: cmsData.subheading,
+            description: cmsData.description,
+            offers: cmsOffers,
+          });
+          return;
+        }
+
+        const cmsItemsResponse = await cmsItemsAPI.getSpecialOffers({ status: "active" });
+        const cmsItemsOffers = normalizeOffers(cmsItemsResponse);
+
+        setSpecialOffersData({
+          heading: cmsData.heading || "Featured Project",
+          subheading: cmsData.subheading || "Special Offer",
+          description: cmsData.description || "Don't miss out on our exclusive limited-time offers",
+          offers: cmsItemsOffers,
+        });
       } catch (error) {
         console.error("Error fetching special offers:", error);
       } finally {
@@ -42,15 +56,17 @@ const SpecialOffersSection = () => {
     return <div className="section-padding text-center">Loading...</div>;
   }
 
-  // Get only the first active offer
+  // Get first offer, else fallback to keep section visible
   const offer = specialOffersData.offers && specialOffersData.offers.length > 0 
     ? specialOffersData.offers[0] 
-    : null;
-
-  // If no offers available, don't render the section
-  if (!offer) {
-    return null;
-  }
+    : {
+        title: "Exclusive Launch Offer",
+        subtitle: "Experience",
+        tagline: "Modern Comfort",
+        description: "Contact us for current project offers and availability.",
+        contactNumbers: ['+91 9042 666 555'],
+        features: ["2 & 3 BHK", "Premium Amenities", "Prime Location", "Limited Period"],
+      };
 
   return (
     <section id="offers" className="section-padding bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
@@ -137,7 +153,7 @@ const SpecialOffersSection = () => {
                   )}
 
                   {/* Features Grid */}
-                  <div className="grid grid-cols-2 gap-3 pt-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
                     {(() => {
                       // Define default features with proper structure
                       const defaultFeatures = [
@@ -216,7 +232,7 @@ const SpecialOffersSection = () => {
             </div>
 
             {/* Floating Action Buttons */}
-            <div className="absolute bottom-6 right-6 flex flex-col gap-3">
+            <div className="absolute bottom-6 right-6 hidden md:flex flex-col gap-3">
               <a
                 href="https://instagram.com"
                 target="_blank"

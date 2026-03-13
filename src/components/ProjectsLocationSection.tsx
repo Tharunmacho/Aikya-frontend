@@ -3,22 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cmsItemsAPI } from "@/services/api";
-
-// Helper to get the full image URL
-const getImageUrl = (imagePath: string) => {
-  if (!imagePath) return '';
-  // If it's already a full URL, return as is
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-    return imagePath;
-  }
-  // If it's a relative API path, prepend the backend API URL
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  if (imagePath.startsWith('/api/')) {
-    // Remove /api prefix since API_BASE already includes it
-    return API_BASE.replace('/api', '') + imagePath;
-  }
-  return imagePath;
-};
+import { getImageUrl } from "@/utils/getImageUrl";
 
 const ProjectsLocationSection = () => {
   const [locations, setLocations] = useState<any[]>([]);

@@ -4,6 +4,7 @@ import CMSTable from './CMSTable';
 import CMSFormDialog from './CMSFormDialog';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '../ui/badge';
+import { getImageUrl } from '@/utils/getImageUrl';
 
 const SpecialOffersManagement = () => {
   const [offers, setOffers] = useState<any[]>([]);
@@ -71,7 +72,16 @@ const SpecialOffersManagement = () => {
        label: 'Image',
        render: (value: string) =>
          value ? (
-           <img src={value} alt="Offer" className="w-12 h-10 rounded object-cover" />
+           <div className="w-12 h-10 rounded overflow-hidden bg-slate-200 dark:bg-slate-700">
+             <img
+               src={getImageUrl(value)}
+               alt="Offer"
+               className="w-12 h-10 object-cover"
+               onError={(event) => {
+                 event.currentTarget.style.display = 'none';
+               }}
+             />
+           </div>
          ) : (
            <div className="w-12 h-10 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
              <span className="text-xs text-slate-400">No img</span>

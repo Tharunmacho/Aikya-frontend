@@ -6,20 +6,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cmsItemsAPI } from "@/services/api";
 import images from "@/assets/imageAssets";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
-// Helper to get the full image URL
-const getImageUrl = (imagePath: string) => {
-  if (!imagePath) return '';
-  // Already a full URL
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
-  // Relative /api/ path — works via Vite proxy locally, and as relative URL in production
-  if (imagePath.startsWith('/api/')) return imagePath;
-  return imagePath;
 };
 
 const Projects = () => {

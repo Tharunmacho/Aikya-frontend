@@ -7,20 +7,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cmsItemsAPI } from "@/services/api";
 import { chennaiAreaImages, areaDisplayNames } from "@/assets/chennaiImages";
+import { getImageUrl } from "@/utils/getImageUrl";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
-// Helper to get the full image URL
-const getImageUrl = (imagePath: string) => {
-  if (!imagePath) return '';
-  // Already a full URL
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath;
-  // Relative /api/ path — works via Vite proxy locally, and as relative URL in production
-  if (imagePath.startsWith('/api/')) return imagePath;
-  return imagePath;
 };
 
 const ChennaiProjects = () => {
@@ -152,11 +143,11 @@ const ChennaiProjects = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex flex-wrap justify-center gap-3 mb-8"
+              className="mb-8 flex gap-3 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center"
             >
               <button
                 onClick={() => setActiveArea("all")}
-                className={`rounded-full px-5 py-2 font-body text-sm font-medium transition-all ${
+                className={`shrink-0 rounded-full px-5 py-2 font-body text-sm font-medium transition-all ${
                   activeArea === "all"
                     ? "bg-primary text-primary-foreground glow-gold"
                     : "border border-border bg-card-glass text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -168,7 +159,7 @@ const ChennaiProjects = () => {
                 <button
                   key={area}
                   onClick={() => setActiveArea(area)}
-                  className={`rounded-full px-5 py-2 font-body text-sm font-medium transition-all ${
+                  className={`shrink-0 rounded-full px-5 py-2 font-body text-sm font-medium transition-all ${
                     activeArea === area
                       ? "bg-primary text-primary-foreground glow-gold"
                       : "border border-border bg-card-glass text-muted-foreground hover:border-primary/40 hover:text-foreground"
