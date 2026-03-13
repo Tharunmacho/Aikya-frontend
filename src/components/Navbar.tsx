@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, User, LogOut, LayoutDashboard, BarChart3, Settings, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard, BarChart3, Settings, ChevronDown } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -27,11 +27,17 @@ const Navbar = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const storiesDropdownRef = useRef<HTMLDivElement>(null);
+  const activeDropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user, isAdmin, logout } = useAuth();
   const { toast } = useToast();
+  const desktopNavLinks = isAdmin
+    ? [
+        ...navLinks,
+        { label: "Management", href: "#", dropdown: [{ label: "Dashboard", href: "/admin-cms" }] },
+      ]
+    : navLinks;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -39,7 +45,7 @@ const Navbar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsProfileDropdownOpen(false);
       }
-      if (storiesDropdownRef.current && !storiesDropdownRef.current.contains(event.target as Node)) {
+      if (activeDropdownRef.current && !activeDropdownRef.current.contains(event.target as Node)) {
         setActiveDropdown(null);
       }
     };
@@ -98,14 +104,7 @@ const Navbar = () => {
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Logo - CENTER on mobile, LEFT on desktop */}
-        <button onClick={() => handleNavClick("#home")} className="flex items-center gap-3 cursor-pointer md:mr-auto">
-          {/* Logo */}
-          <div className="bg-gray-900 text-white px-4 py-2 rounded">
-            <span className="font-heading text-xl font-bold">aikya</span>
-          </div>
-          <span className="font-body text-xs text-gray-600 hidden sm:block">Building Future</span>
-        </button>
+        <div className="flex-1 md:hidden" />
 
         {/* Offers Button - Desktop and Mobile */}
         <button
@@ -117,7 +116,7 @@ const Navbar = () => {
         </button>
 
         {/* Desktop */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-6 md:ml-auto md:flex">
           {/* Special Offers Button - Desktop */}
           <button
             onClick={() => handleNavClick("#offers")}
@@ -127,9 +126,9 @@ const Navbar = () => {
             Offers
           </button>
           
-          {navLinks.map((link) => (
+          {desktopNavLinks.map((link) => (
             link.dropdown ? (
-              <div key={link.href} className="relative" ref={link.label === "Our Stories" ? storiesDropdownRef : undefined}>
+              <div key={link.label} className="relative" ref={activeDropdown === link.label ? activeDropdownRef : undefined}>
                 <button
                   onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
                   className="font-body text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 cursor-pointer flex items-center gap-1"
@@ -226,7 +225,7 @@ const Navbar = () => {
                             className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-50 transition-colors cursor-pointer text-left"
                           >
                             <Settings size={18} className="text-gray-600" />
-                            <span className="font-body text-sm text-gray-900">Management Setting</span>
+                            <span className="font-body text-sm text-gray-900">Admin Dashboard</span>
                           </button>
                         )}
                         <button
@@ -270,9 +269,9 @@ const Navbar = () => {
             className="border-t border-gray-200 bg-white md:hidden shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto"
           >
             <div className="flex flex-col gap-4 px-6 py-6">
-              {navLinks.map((link) => (
+              {desktopNavLinks.map((link) => (
                 link.dropdown ? (
-                  <div key={link.href} className="flex flex-col gap-2">
+                  <div key={link.label} className="flex flex-col gap-2">
                     <button
                       onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
                       className="font-body text-gray-700 transition-colors hover:text-gray-900 text-left cursor-pointer font-semibold flex items-center justify-between"
@@ -334,7 +333,7 @@ const Navbar = () => {
                       className="w-full rounded-lg border-2 border-gray-900 px-5 py-2.5 text-left font-body text-sm font-semibold text-gray-900 cursor-pointer flex items-center gap-2 hover:bg-gray-50"
                     >
                       <Settings size={18} />
-                      Management Setting
+                      Admin Dashboard
                     </button>
                   )}
                   <button

@@ -54,6 +54,18 @@ const TestimonialsManagement = () => {
         </div>
       ),
     },
+     {
+       key: 'image',
+       label: 'Photo',
+       render: (value: string) =>
+         value ? (
+           <img src={value} alt="Profile" className="w-10 h-10 rounded-full object-cover" />
+         ) : (
+           <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+             <span className="text-xs text-slate-400">N/A</span>
+           </div>
+         ),
+     },
   ];
 
   const formFields = [

@@ -49,6 +49,18 @@ const LeadershipManagement = () => {
         <Badge className="bg-slate-500/20 text-slate-300">{value || 0}</Badge>
       ),
     },
+     {
+       key: 'image',
+       label: 'Photo',
+       render: (value: string) =>
+         value ? (
+           <img src={value} alt="Leader" className="w-10 h-10 rounded-full object-cover" />
+         ) : (
+           <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+             <span className="text-xs text-slate-400">N/A</span>
+           </div>
+         ),
+     },
   ];
 
   const formFields = [
@@ -189,12 +201,27 @@ const LeadershipManagement = () => {
     setFormOpen(true);
   };
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = async (data: any) => {
     if (editingItem) {
-      handleUpdate(editingItem._id, data);
+      await handleUpdate(editingItem._id, data);
     } else {
-      handleCreate(data);
+      await handleCreate(data);
     }
+  };
+
+  const handleFilterChange = (filters: Record<string, string>) => {
+    let filtered = [...leaders];
+
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (leader) =>
+          leader.name?.toLowerCase().includes(searchLower) ||
+          leader.title?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    setFilteredLeaders(filtered);
   };
 
   return (
@@ -208,21 +235,14 @@ const LeadershipManagement = () => {
         stats={[
           { label: 'Total Leaders', value: stats.total || 0 },
         ]}
-        onAdd={() => {
+        onCreateNew={() => {
           setEditingItem(null);
           setFormOpen(true);
         }}
         onEdit={handleEdit}
         onDelete={handleDelete}
         searchPlaceholder="Search leaders..."
-        onSearch={(query) => {
-          const filtered = leaders.filter(
-            (leader) =>
-              leader.name?.toLowerCase().includes(query.toLowerCase()) ||
-              leader.title?.toLowerCase().includes(query.toLowerCase())
-          );
-          setFilteredLeaders(filtered);
-        }}
+        onFilterChange={handleFilterChange}
       />
 
       <CMSFormDialog

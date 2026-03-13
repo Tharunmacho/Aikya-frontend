@@ -45,6 +45,18 @@ const LocationCardsManagement = () => {
         <Badge className="bg-slate-500/20 text-slate-300">{value || 0}</Badge>
       ),
     },
+     {
+       key: 'image',
+       label: 'Image',
+       render: (value: string) =>
+         value ? (
+           <img src={value} alt="Location" className="w-12 h-10 rounded object-cover" />
+         ) : (
+           <div className="w-12 h-10 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+             <span className="text-xs text-slate-400">No img</span>
+           </div>
+         ),
+     },
   ];
 
   const formFields = [
@@ -179,12 +191,27 @@ const LocationCardsManagement = () => {
     setFormOpen(true);
   };
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = async (data: any) => {
     if (editingItem) {
-      handleUpdate(editingItem._id, data);
+      await handleUpdate(editingItem._id, data);
     } else {
-      handleCreate(data);
+      await handleCreate(data);
     }
+  };
+
+  const handleFilterChange = (filters: Record<string, string>) => {
+    let filtered = [...locations];
+
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (location) =>
+          location.name?.toLowerCase().includes(searchLower) ||
+          location.description?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    setFilteredLocations(filtered);
   };
 
   return (
@@ -199,21 +226,14 @@ const LocationCardsManagement = () => {
           { label: 'Total Locations', value: stats.total || 0 },
           { label: 'Total Projects', value: stats.totalProjects || 0 },
         ]}
-        onAdd={() => {
+        onCreateNew={() => {
           setEditingItem(null);
           setFormOpen(true);
         }}
         onEdit={handleEdit}
         onDelete={handleDelete}
         searchPlaceholder="Search locations..."
-        onSearch={(query) => {
-          const filtered = locations.filter(
-            (location) =>
-              location.name?.toLowerCase().includes(query.toLowerCase()) ||
-              location.description?.toLowerCase().includes(query.toLowerCase())
-          );
-          setFilteredLocations(filtered);
-        }}
+        onFilterChange={handleFilterChange}
       />
 
       <CMSFormDialog

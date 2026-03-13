@@ -29,6 +29,18 @@ const WhyChooseManagement = () => {
         </div>
       ),
     },
+     {
+       key: 'image',
+       label: 'Image',
+       render: (value: string) =>
+         value ? (
+           <img src={value} alt="Feature" className="w-12 h-10 rounded object-cover" />
+         ) : (
+           <div className="w-12 h-10 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+             <span className="text-xs text-slate-400">No img</span>
+           </div>
+         ),
+     },
     {
       key: 'desc',
       label: 'Description',
@@ -79,6 +91,13 @@ const WhyChooseManagement = () => {
       required: false,
       placeholder: '1',
     },
+     {
+       name: 'image',
+       label: 'Feature Image (optional)',
+       type: 'image' as const,
+       required: false,
+       placeholder: 'Upload or enter image URL (optional, in addition to icon)',
+     },
   ];
 
   useEffect(() => {
@@ -174,12 +193,27 @@ const WhyChooseManagement = () => {
     setFormOpen(true);
   };
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = async (data: any) => {
     if (editingItem) {
-      handleUpdate(editingItem._id, data);
+      await handleUpdate(editingItem._id, data);
     } else {
-      handleCreate(data);
+      await handleCreate(data);
     }
+  };
+
+  const handleFilterChange = (filters: Record<string, string>) => {
+    let filtered = [...reasons];
+
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (reason) =>
+          reason.title?.toLowerCase().includes(searchLower) ||
+          reason.desc?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    setFilteredReasons(filtered);
   };
 
   return (
@@ -193,21 +227,14 @@ const WhyChooseManagement = () => {
         stats={[
           { label: 'Total Reasons', value: stats.total || 0 },
         ]}
-        onAdd={() => {
+        onCreateNew={() => {
           setEditingItem(null);
           setFormOpen(true);
         }}
         onEdit={handleEdit}
         onDelete={handleDelete}
         searchPlaceholder="Search reasons..."
-        onSearch={(query) => {
-          const filtered = reasons.filter(
-            (reason) =>
-              reason.title?.toLowerCase().includes(query.toLowerCase()) ||
-              reason.desc?.toLowerCase().includes(query.toLowerCase())
-          );
-          setFilteredReasons(filtered);
-        }}
+        onFilterChange={handleFilterChange}
       />
 
       <CMSFormDialog

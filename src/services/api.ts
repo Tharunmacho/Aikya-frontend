@@ -38,6 +38,11 @@ export const authAPI = {
     return response.data;
   },
 
+  getCurrentUser: async () => {
+    const response = await api.get('/auth/me');
+    return response.data;
+  },
+
   // Get all users
   getUsers: async () => {
     const response = await api.get('/auth/users');
@@ -47,12 +52,13 @@ export const authAPI = {
 
 // User storage helpers
 export const userStorage = {
-  setUser: (userData: { token: string; fullName: string; email: string; _id: string }) => {
+  setUser: (userData: { token: string; fullName: string; email: string; _id: string; isAdmin?: boolean }) => {
     localStorage.setItem('token', userData.token);
     localStorage.setItem('user', JSON.stringify({
       fullName: userData.fullName,
       email: userData.email,
       _id: userData._id,
+      isAdmin: userData.isAdmin || false,
     }));
   },
 

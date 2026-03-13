@@ -40,6 +40,18 @@ const CSRManagement = () => {
       key: 'date',
       label: 'Date',
     },
+     {
+       key: 'image',
+       label: 'Image',
+       render: (value: string) =>
+         value ? (
+           <img src={value} alt="CSR" className="w-12 h-10 rounded object-cover" />
+         ) : (
+           <div className="w-12 h-10 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+             <span className="text-xs text-slate-400">No img</span>
+           </div>
+         ),
+     },
   ];
 
   const formFields = [

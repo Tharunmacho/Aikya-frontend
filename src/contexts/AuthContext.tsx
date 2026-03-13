@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { userStorage } from '@/services/api';
+import { authAPI, userStorage } from '@/services/api';
 
 interface User {
   _id: string;
@@ -29,9 +29,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = userStorage.getToken();
     
     if (storedUser && token) {
-      setUser(storedUser);
-      setIsAuthenticated(true);
-      setIsAdmin(storedUser.isAdmin || false);
+      const syncCurrentUser = async () => {
+        try {
+          const response = await authAPI.getCurrentUser();
+          const currentUser = response.data;
+          setUser(currentUser);
+          setIsAuthenticated(true);
+          setIsAdmin(currentUser.isAdmin || false);
+          userStorage.setUser({ ...currentUser, token });
+        } catch {
+          setUser(storedUser);
+          setIsAuthenticated(true);
+          setIsAdmin(storedUser.isAdmin || false);
+        }
+      };
+
+      syncCurrentUser();
     }
   }, []);
 

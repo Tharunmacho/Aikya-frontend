@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -20,7 +20,7 @@ import {
 } from '../ui/select';
 import { uploadAPI } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, X, Loader2 } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 
 interface FormField {
   name: string;
@@ -28,6 +28,7 @@ interface FormField {
   type: 'text' | 'textarea' | 'select' | 'image' | 'date' | 'number' | 'array';
   required?: boolean;
   placeholder?: string;
+  helpText?: string;
   options?: { value: string; label: string }[];
   rows?: number;
 }
@@ -41,8 +42,8 @@ interface CMSFormDialogProps {
   initialData?: Record<string, any>;
   onSubmit: (data: Record<string, any>) => Promise<void>;
   submitLabel?: string;
+  loading?: boolean;
 }
-
 const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
   open,
   onOpenChange,
@@ -81,7 +82,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
           }
         });
         setFormData(processedData);
-        console.log('📝 Form initialized with data:', processedData);
+        console.log('Form initialized with data:', processedData);
       } else {
         // Initialize empty form
         const emptyForm: Record<string, any> = {};
@@ -89,7 +90,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
           emptyForm[field.name] = field.type === 'array' ? [] : '';
         });
         setFormData(emptyForm);
-        console.log('📝 Form initialized empty');
+        console.log('Form initialized empty');
       }
       initializedRef.current = true;
     }
@@ -118,23 +119,23 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
       // Get old image URL if this is an update (from current formData, not initialData)
       const oldImageUrl = formData[name];
       
-      console.log('🔄 Uploading image:', file.name);
-      console.log('🗑️ Will replace:', oldImageUrl);
+      console.log('Uploading image:', file.name);
+      console.log('Will replace:', oldImageUrl);
       
       // Upload new image
       const response = await uploadAPI.uploadSingle(file);
       
       if (response.success) {
         const newImageUrl = response.data.url;
-        console.log('✅ New image URL:', newImageUrl);
+        console.log('New image URL:', newImageUrl);
         
         // Clean up old image if it exists and it's not a placeholder
         if (oldImageUrl && !oldImageUrl.includes('unsplash.com') && !oldImageUrl.includes('placeholder')) {
           try {
             await uploadAPI.deleteImage(oldImageUrl);
-            console.log('🗑️ Old image removed');
+            console.log('Old image removed');
           } catch (error) {
-            console.warn('⚠️ Could not delete old image:', error);
+            console.warn('Could not delete old image:', error);
           }
         }
         
@@ -142,7 +143,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
         setImageKey(prev => prev + 1);
         setFormData(prev => {
           const updated = { ...prev, [name]: newImageUrl };
-          console.log('📝 Form data updated:', updated);
+          console.log('Form data updated:', updated);
           return updated;
         });
         
@@ -157,7 +158,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
         });
       }
     } catch (error: any) {
-      console.error('❌ Upload error:', error);
+      console.error('Upload error:', error);
       toast({
         title: 'Upload failed', 
         description: error.message || 'Failed to upload image',
@@ -249,7 +250,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
 
       case 'image':
         const currentImageUrl = formData[field.name] || '';
-        console.log(`🔍 Rendering image field, current URL:`, currentImageUrl);
+        console.log('Rendering image field, current URL:', currentImageUrl);
         return (
           <div className="mt-2 space-y-3">
             {currentImageUrl && (
@@ -259,9 +260,9 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
                   alt="Preview"
                   key={`${field.name}-${imageKey}-${currentImageUrl}`}
                   className="w-32 h-32 object-cover rounded-lg border"
-                  onLoad={() => console.log('🖼️ Image loaded:', currentImageUrl)}
+                  onLoad={() => console.log('Image loaded:', currentImageUrl)}
                   onError={(e) => {
-                    console.warn('❌ Image load error:', currentImageUrl);
+                    console.warn('Image load error:', currentImageUrl);
                     e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="128" height="128"%3E%3Crect fill="%23ddd" width="128" height="128"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
                   }}
                 />
@@ -285,7 +286,7 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
-                    console.log('📁 File selected:', file.name, '- Size:', file.size, 'bytes');
+                    console.log('File selected:', file.name, '- Size:', file.size, 'bytes');
                     handleImageUpload(field.name, file);
                   }
                 }}
@@ -343,6 +344,9 @@ const CMSFormDialog: React.FC<CMSFormDialogProps> = ({
                   {field.required && <span className="text-red-500 ml-1">*</span>}
                 </Label>
                 {renderField(field)}
+                 {field.helpText && (
+                   <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{field.helpText}</p>
+                 )}
               </div>
             ))}
           </div>

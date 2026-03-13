@@ -17,7 +17,7 @@ const CareersManagement = () => {
     {
       key: 'title',
       label: 'Position',
-      render: (value: string, item: any) => (
+       render: (value: string, item: any) => (
         <div className="max-w-xs">
           <p className="font-medium">{value || 'Untitled Position'}</p>
           {item.location && (
@@ -26,6 +26,18 @@ const CareersManagement = () => {
         </div>
       ),
     },
+     {
+       key: 'image',
+       label: 'Image',
+       render: (value: string) =>
+         value ? (
+           <img src={value} alt="Job" className="w-12 h-10 rounded object-cover" />
+         ) : (
+           <div className="w-12 h-10 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+             <span className="text-xs text-slate-400">No img</span>
+           </div>
+         ),
+     },
     {
       key: 'department',
       label: 'Department',
@@ -153,6 +165,13 @@ const CareersManagement = () => {
       type: 'text' as const,
       placeholder: 'Application form URL',
     },
+     {
+       name: 'image',
+       label: 'Job / Department Image',
+       type: 'image' as const,
+       required: false,
+       placeholder: 'Upload or enter image URL',
+     },
   ];
 
   const fetchPositions = async (filters?: any) => {
