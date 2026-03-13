@@ -16,6 +16,8 @@ import {
   Building2, 
   ChevronDown,
   ChevronRight,
+  Menu,
+  X,
   Sun,
   Moon,
   LogOut,
@@ -44,6 +46,7 @@ const AdminCMS = () => {
   const [contentExpanded, setContentExpanded] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Apply dark mode class to document
   useEffect(() => {
@@ -702,8 +705,16 @@ const AdminCMS = () => {
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="stars absolute inset-0"></div>
         </div>
+        {/* Mobile Sidebar Overlay */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-black/50 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
         {/* Sidebar */}
-        <div className="w-64 bg-white/95 dark:bg-slate-900/80 backdrop-blur-md border-r border-slate-200 dark:border-slate-800/50 flex flex-col relative z-10">
+        <div className={`fixed inset-y-0 left-0 z-40 w-64 bg-white/95 dark:bg-slate-900/80 backdrop-blur-md border-r border-slate-200 dark:border-slate-800/50 flex flex-col transform transition-transform duration-300 md:static md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           {/* Sidebar Header */}
           <div className="p-6 border-b border-slate-800/50">
             <h1 className="text-xl font-bold text-white">Admin Panel</h1>
@@ -730,6 +741,7 @@ const AdminCMS = () => {
               <div className="absolute top-full left-4 right-4 mt-2 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 z-50">
                 <button
                   onClick={() => {
+                    setIsSidebarOpen(false);
                     navigate('/admin-cms');
                     setProfileDropdownOpen(false);
                   }}
@@ -740,6 +752,7 @@ const AdminCMS = () => {
                 </button>
                 <button
                   onClick={() => {
+                    setIsSidebarOpen(false);
                     handleLogout();
                     setProfileDropdownOpen(false);
                   }}
@@ -759,14 +772,20 @@ const AdminCMS = () => {
               <div>
                 <h3 className="px-3 mb-2 text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase tracking-wider">MAIN</h3>
                 <button
-                  onClick={() => navigate('/')}
+                  onClick={() => {
+                    setIsSidebarOpen(false);
+                    navigate('/');
+                  }}
                   className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <Home size={18} />
                   <span>Home</span>
                 </button>
                 <button
-                  onClick={() => navigate('/dashboard')}
+                  onClick={() => {
+                    setIsSidebarOpen(false);
+                    navigate('/dashboard');
+                  }}
                   className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <LayoutDashboard size={18} />
@@ -786,7 +805,10 @@ const AdminCMS = () => {
                 {contentExpanded && (
                   <div className="mt-2 space-y-1">
                     <button
-                      onClick={() => setActiveSection('hero')}
+                      onClick={() => {
+                        setActiveSection('hero');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'hero'
                           ? 'bg-blue-600 text-white'
@@ -797,7 +819,10 @@ const AdminCMS = () => {
                       <span>Hero Section</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('about')}
+                      onClick={() => {
+                        setActiveSection('about');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'about'
                           ? 'bg-blue-600 text-white'
@@ -808,7 +833,10 @@ const AdminCMS = () => {
                       <span>About Us</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('news-manage')}
+                      onClick={() => {
+                        setActiveSection('news-manage');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'news-manage'
                           ? 'bg-blue-600 text-white'
@@ -819,7 +847,10 @@ const AdminCMS = () => {
                       <span>News Manager</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('projects-manage')}
+                      onClick={() => {
+                        setActiveSection('projects-manage');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'projects-manage'
                           ? 'bg-blue-600 text-white'
@@ -830,7 +861,10 @@ const AdminCMS = () => {
                       <span>Projects Manager</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('services-manage')}
+                      onClick={() => {
+                        setActiveSection('services-manage');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'services-manage'
                           ? 'bg-blue-600 text-white'
@@ -841,7 +875,10 @@ const AdminCMS = () => {
                       <span>Services Manager</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('csr-manage')}
+                      onClick={() => {
+                        setActiveSection('csr-manage');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'csr-manage'
                           ? 'bg-blue-600 text-white'
@@ -852,7 +889,10 @@ const AdminCMS = () => {
                       <span>CSR Manager</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('events-manage')}
+                      onClick={() => {
+                        setActiveSection('events-manage');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'events-manage'
                           ? 'bg-blue-600 text-white'
@@ -863,7 +903,10 @@ const AdminCMS = () => {
                       <span>Events Manager</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('careers-manage')}
+                      onClick={() => {
+                        setActiveSection('careers-manage');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'careers-manage'
                           ? 'bg-blue-600 text-white'
@@ -874,7 +917,10 @@ const AdminCMS = () => {
                       <span>Careers Manager</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('testimonials')}
+                      onClick={() => {
+                        setActiveSection('testimonials');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'testimonials'
                           ? 'bg-blue-600 text-white'
@@ -885,7 +931,10 @@ const AdminCMS = () => {
                       <span>Testimonials</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('specialoffers')}
+                      onClick={() => {
+                        setActiveSection('specialoffers');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'specialoffers'
                           ? 'bg-blue-600 text-white'
@@ -896,7 +945,10 @@ const AdminCMS = () => {
                       <span>Special Offers</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('leadership')}
+                      onClick={() => {
+                        setActiveSection('leadership');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'leadership'
                           ? 'bg-blue-600 text-white'
@@ -907,7 +959,10 @@ const AdminCMS = () => {
                       <span>Leadership</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('whychoose')}
+                      onClick={() => {
+                        setActiveSection('whychoose');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'whychoose'
                           ? 'bg-blue-600 text-white'
@@ -918,7 +973,10 @@ const AdminCMS = () => {
                       <span>Why Choose Us</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('locations')}
+                      onClick={() => {
+                        setActiveSection('locations');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'locations'
                           ? 'bg-blue-600 text-white'
@@ -929,7 +987,10 @@ const AdminCMS = () => {
                       <span>Location Cards</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('contact')}
+                      onClick={() => {
+                        setActiveSection('contact');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'contact'
                           ? 'bg-blue-600 text-white'
@@ -940,7 +1001,10 @@ const AdminCMS = () => {
                       <span>Contact Info</span>
                     </button>
                     <button
-                      onClick={() => setActiveSection('footer')}
+                      onClick={() => {
+                        setActiveSection('footer');
+                        setIsSidebarOpen(false);
+                      }}
                       className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                         activeSection === 'footer'
                           ? 'bg-blue-600 text-white'
@@ -959,7 +1023,10 @@ const AdminCMS = () => {
           {/* Sidebar Footer */}
           <div className="p-4 border-t border-slate-200 dark:border-slate-800/50">
             <button
-              onClick={handleLogout}
+              onClick={() => {
+                setIsSidebarOpen(false);
+                handleLogout();
+              }}
               className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               <LogOut size={18} />
@@ -971,9 +1038,16 @@ const AdminCMS = () => {
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col overflow-hidden relative z-10">
           {/* Top Bar */}
-          <div className="h-16 bg-white/95 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/50 flex items-center justify-between px-6">
-            <div>
-              <h2 className="text-xl font-semibold text-white capitalize">
+          <div className="h-16 bg-white/95 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/50 flex items-center justify-between px-3 md:px-6">
+            <div className="flex items-center gap-2 min-w-0">
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="md:hidden p-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                aria-label="Toggle sidebar"
+              >
+                {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+              <h2 className="text-base md:text-xl font-semibold text-white capitalize truncate">
                 {activeSection === 'dashboard' ? 'Dashboard' : 
                  activeSection === 'hero' ? 'Hero Section' :
                  activeSection === 'about' ? 'About Section' :
@@ -1005,8 +1079,8 @@ const AdminCMS = () => {
           </div>
 
           {/* Main Content */}
-          <ScrollArea className="flex-1 p-6">
-            <div className="max-w-4xl mx-auto">
+          <ScrollArea className="flex-1 p-3 md:p-6">
+            <div className="max-w-full xl:max-w-5xl mx-auto">
               {renderMainContent()}
             </div>
           </ScrollArea>

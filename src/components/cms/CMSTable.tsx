@@ -151,7 +151,7 @@ const CMSTable: React.FC<CMSTableProps> = ({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             {title}
@@ -168,7 +168,7 @@ const CMSTable: React.FC<CMSTableProps> = ({
           )}
         </div>
         {onCreateNew && (
-          <Button onClick={onCreateNew} className="gap-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold">
+          <Button onClick={onCreateNew} className="w-full sm:w-auto gap-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold">
             <Plus size={18} />
             Create New
           </Button>
@@ -185,7 +185,7 @@ const CMSTable: React.FC<CMSTableProps> = ({
         </div>
         <div className="flex flex-wrap gap-3">
           {/* Search */}
-          <div className="relative flex-1 min-w-[200px]">
+          <div className="relative flex-1 min-w-full sm:min-w-[220px]">
             <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <Input
               type="text"
@@ -203,7 +203,7 @@ const CMSTable: React.FC<CMSTableProps> = ({
               value={filterValues[filter.key] || 'all'}
               onValueChange={(value) => handleFilterChange(filter.key, value)}
             >
-              <SelectTrigger className="w-[180px] bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white">
+              <SelectTrigger className="w-full sm:w-[180px] bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white">
                 <SelectValue placeholder={filter.label} />
               </SelectTrigger>
               <SelectContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700">
@@ -233,7 +233,7 @@ const CMSTable: React.FC<CMSTableProps> = ({
       {/* Table */}
       <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[760px]">
             <thead className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
               <tr>
                 {columns.map((column) => (
