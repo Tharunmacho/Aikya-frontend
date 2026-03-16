@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" role="img" aria-label="Aikya logo">
+  <rect width="720" height="720" fill="#f2f2f2"/>
+
+  <polygon points="130,312 325,120 325,460" fill="#a9153b"/>
+  <polygon points="395,120 590,312 395,460" fill="#a9153b"/>
+
+  <polygon points="10,462 120,350 308,462" fill="#4b4b4f"/>
+  <polygon points="412,462 600,350 710,462" fill="#4b4b4f"/>
+
+  <rect x="338" y="95" width="12" height="570" fill="#f2f2f2"/>
+  <polygon points="135,318 325,458 325,470 120,350" fill="#f2f2f2"/>
+  <polygon points="395,458 585,318 600,350 395,470" fill="#f2f2f2"/>
+  <rect x="10" y="477" width="700" height="10" fill="#f2f2f2"/>
+
+  <g opacity="0.23">
+    <polygon points="130,548 325,490 325,665" fill="#b9b9bb"/>
+    <polygon points="395,490 590,548 395,665" fill="#b9b9bb"/>
+    <polygon points="40,500 300,500 190,545" fill="#c5c5c7"/>
+    <polygon points="420,500 680,500 530,545" fill="#c5c5c7"/>
+    <polygon points="170,560 550,560 360,625" fill="#bdbdbf"/>
+  </g>
+
+  <rect x="338" y="478" width="12" height="190" fill="#f2f2f2" opacity="0.9"/>
+</svg>

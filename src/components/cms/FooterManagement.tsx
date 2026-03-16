@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { cmsItemsAPI } from '@/services/api';
+import { cmsAPI, cmsItemsAPI, uploadAPI } from '@/services/api';
 import CMSTable from './CMSTable';
 import CMSFormDialog from './CMSFormDialog';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { getImageUrl } from '@/utils/getImageUrl';
 
 const FooterManagement = () => {
   const [footerItems, setFooterItems] = useState<any[]>([]);
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [savingLogo, setSavingLogo] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
+  const [footerConfig, setFooterConfig] = useState({ logo: '' });
   const { toast } = useToast();
 
   const columns = [
@@ -105,8 +111,77 @@ const FooterManagement = () => {
   ];
 
   useEffect(() => {
+    fetchFooterConfig();
     fetchFooterItems();
   }, []);
+
+  const fetchFooterConfig = async () => {
+    try {
+      const response = await cmsAPI.getFooter();
+      const data = response?.data || {};
+      setFooterConfig({
+        logo: data.logo || '',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to fetch footer branding',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleLogoUpload = async (file: File) => {
+    setUploadingLogo(true);
+    try {
+      const response = await uploadAPI.uploadSingle(file);
+      const uploadedUrl = response?.data?.url;
+
+      if (!uploadedUrl) {
+        throw new Error('Upload succeeded but no URL returned');
+      }
+
+      setFooterConfig((prev) => ({ ...prev, logo: uploadedUrl }));
+      toast({
+        title: 'Logo uploaded',
+        description: 'Logo uploaded to bucket successfully',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Upload failed',
+        description: error.response?.data?.message || error.message || 'Failed to upload logo',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploadingLogo(false);
+    }
+  };
+
+  const saveFooterLogo = async () => {
+    setSavingLogo(true);
+    try {
+      const footerResponse = await cmsAPI.getFooter();
+      const existingFooter = footerResponse?.data || {};
+
+      await cmsAPI.updateFooter({
+        ...existingFooter,
+        logo: footerConfig.logo,
+      });
+
+      toast({
+        title: 'Success',
+        description: 'Footer logo saved to database',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.message || 'Failed to save footer logo',
+        variant: 'destructive',
+      });
+    } finally {
+      setSavingLogo(false);
+    }
+  };
 
   const fetchFooterItems = async () => {
     setLoading(true);
@@ -214,6 +289,48 @@ const FooterManagement = () => {
 
   return (
     <>
+      <div className="mb-6 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 p-5 space-y-4">
+        <div>
+          <h3 className="text-base font-semibold text-slate-900 dark:text-white">Brand Logo</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Upload logo to bucket and save URL in footer CMS data.</p>
+        </div>
+
+        {footerConfig.logo ? (
+          <img
+            src={getImageUrl(footerConfig.logo)}
+            alt="Footer logo"
+            className="h-20 w-auto object-contain rounded-md border border-slate-200 dark:border-slate-700 p-2 bg-white"
+          />
+        ) : null}
+
+        <div className="grid gap-3 md:grid-cols-2">
+          <Input
+            value={footerConfig.logo}
+            onChange={(e) => setFooterConfig((prev) => ({ ...prev, logo: e.target.value }))}
+            placeholder="Paste logo URL or upload below"
+          />
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                handleLogoUpload(file);
+              }
+            }}
+            disabled={uploadingLogo}
+          />
+        </div>
+
+        <Button
+          onClick={saveFooterLogo}
+          disabled={savingLogo || uploadingLogo || !footerConfig.logo}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          {savingLogo ? 'Saving...' : 'Save Logo to DB'}
+        </Button>
+      </div>
+
       <CMSTable
         title="Footer Management"
         description="Manage footer contact information, social links, and quick links"

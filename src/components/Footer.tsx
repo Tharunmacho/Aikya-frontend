@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { cmsAPI } from "@/services/api";
 import EnquiryDialog from "./EnquiryDialog";
 
+const BRAND_LOGO = "/aikya-logo.svg";
+
 const Footer = () => {
   const [footerData, setFooterData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -57,9 +59,11 @@ const Footer = () => {
             {/* Company Info */}
             <div>
               <div className="mb-4">
-                <div className="bg-gray-900 text-white px-4 py-2 rounded inline-block mb-2">
-                  <span className="font-heading text-xl font-bold">aikya</span>
-                </div>
+                <img
+                  src={BRAND_LOGO}
+                  alt="Aikya logo"
+                  className="h-14 w-auto object-contain mb-2"
+                />
                 <p className="font-body text-xs text-gray-600">{footerData.tagline || 'Building Future'}</p>
               </div>
               <div className="space-y-3 font-body text-sm text-gray-600">

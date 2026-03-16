@@ -4,6 +4,9 @@ import { Menu, X, LogOut, LayoutDashboard, BarChart3, Settings, ChevronDown } fr
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { cmsAPI } from "@/services/api";
+
+const BRAND_LOGO = "/aikya-logo.svg";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -25,6 +28,7 @@ const Navbar = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null);
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
+  const [siteName, setSiteName] = useState<string>("Aikya");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const activeDesktopDropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -51,6 +55,26 @@ const Navbar = () => {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const fetchBranding = async () => {
+      try {
+        const response = await cmsAPI.getFooter();
+        const companyName = response?.data?.companyName || "Aikya";
+
+        setSiteName(companyName);
+
+        const iconLinks = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
+        iconLinks.forEach((link) => {
+          (link as HTMLLinkElement).href = BRAND_LOGO;
+        });
+      } catch (error) {
+        console.error('Failed to fetch branding:', error);
+      }
+    };
+
+    fetchBranding();
   }, []);
 
   // Get user initials from full name
@@ -124,6 +148,18 @@ const Navbar = () => {
       className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-4">
+        <button
+          onClick={() => handleNavClick("/")}
+          className="hidden md:flex items-center cursor-pointer"
+          aria-label="Go to homepage"
+        >
+          <img
+            src={BRAND_LOGO}
+            alt={siteName}
+            className="h-12 w-auto object-contain"
+          />
+        </button>
+
         {/* Mobile toggle - LEFT SIDE */}
         <button 
           onClick={() => setIsOpen(!isOpen)} 
