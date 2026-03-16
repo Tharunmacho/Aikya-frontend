@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cmsAPI } from "@/services/api";
 
 const BRAND_LOGO = "/aikya-logo.svg";
+const BRAND_FAVICON = "/aikya-logo.svg?v=20260316";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -67,7 +68,7 @@ const Navbar = () => {
 
         const iconLinks = document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']");
         iconLinks.forEach((link) => {
-          (link as HTMLLinkElement).href = BRAND_LOGO;
+          (link as HTMLLinkElement).href = BRAND_FAVICON;
         });
       } catch (error) {
         console.error('Failed to fetch branding:', error);
@@ -169,7 +170,17 @@ const Navbar = () => {
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        <div className="flex-1 md:hidden" />
+        <button
+          onClick={() => handleNavClick("/")}
+          className="md:hidden flex items-center"
+          aria-label="Go to homepage"
+        >
+          <img
+            src={BRAND_LOGO}
+            alt={siteName}
+            className="h-10 w-auto object-contain"
+          />
+        </button>
 
         {/* Offers Button - Desktop and Mobile */}
         <button
